@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { call } from "../services/ApiService";
 
 const Test = () => {
   const [data, setData] = useState();
   useEffect(() => {
-    async function test() {
-      const response = await fetch("http://localhost:5500/test/");
-      if (!response.ok) {
-        const message = `An error occurred: ${response.statusText}`;
-        window.alert(message);
-        return;
-      }
-      const result = await response.json();
-      setData(result.msg);
-    }
-    test();
-    return;
+    call("/test", "GET", null).then((res) => {
+      const msg = res.data.msg;
+      setData(msg);
+    });
   }, []);
   return <div>{data}</div>;
 };
